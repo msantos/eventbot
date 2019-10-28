@@ -1,0 +1,20 @@
+[Unit]
+Description=eventbot event stream monitoring
+After=network.target
+
+[Service]
+User=eventbot
+Group=eventbot
+Environment=HOME='/usr/local/lib/eventbot/var'
+EnvironmentFile=/etc/eventbot/eventbot.env
+Restart=always
+RestartSec=5
+ExecStart=/usr/local/lib/eventbot/bin/eventbot start
+#PrivateDevices=true
+#ProtectSystem=full
+TimeoutSec=300
+WorkingDirectory=/usr/local/lib/eventbot
+
+[Install]
+WantedBy=multi-user.target
+Alias=eventbot.service

@@ -1,0 +1,2 @@
+defmodule Eventbot do
+end

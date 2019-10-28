@@ -1,0 +1,76 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -x
+
+USERGROUP=${1-eventbot:eventbot}
+INSTALLDIR=${2-/usr/local/lib/eventbot}
+
+CHROOT="bin \
+        dev \
+        etc \
+        home \
+        lib \
+        lib64 \
+        opt \
+        proc \
+        sbin \
+        tmp \
+        usr"
+
+cd $INSTALLDIR
+
+chown -R $USERGROUP .
+
+if [ ! -e "/var/lib/eventbot/priv" ]; then
+    (
+    mkdir -p /var/lib/eventbot/priv
+    cd /var/lib/eventbot/priv
+
+    for dir in $CHROOT; do
+        mkdir -p root/$dir
+    done
+
+    mkdir opt
+
+    mkdir state
+    chown $USERGROUP state
+
+    cd root/dev
+    mknod --mode=666 null c 1 3
+    mknod --mode=666 random c 1 8
+    mknod --mode=666 urandom c 1 9
+    )
+fi
+
+mkdir -p tmp
+chown $USERGROUP tmp
+mkdir -p var
+chown $USERGROUP var
+chown $USERGROUP lib/prx-*/priv/prx
+chown root lib/prx-*/priv/prx
+chmod 4550 lib/prx-*/priv/prx
+
+if [ ! -e "priv" ]; then
+    ln -s /var/lib/eventbot/priv .
+fi
+
+pushd lib/eventbot-*/
+if [ ! -e "priv" ] || [ -d "priv" ]; then
+  rm -rf priv
+  ln -f -s /var/lib/eventbot/priv .
+fi
+popd
+
+if [ ! -e "/var/log/eventbot" ]; then
+    mkdir /var/log/eventbot
+    chown $USERGROUP /var/log/eventbot
+fi
+
+pushd var
+if [ ! -e "log" ]; then
+    ln -s /var/log/eventbot log
+fi
+popd
