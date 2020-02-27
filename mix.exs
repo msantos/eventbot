@@ -11,11 +11,12 @@ defmodule Eventbot.Mixfile do
       deps: deps(),
       description: "Interact with event streams using XMPP",
       dialyzer: [
-        plt_add_deps: :transitive,
-        paths: [
-          "_build/dev/lib/runlet/ebin",
-          "_build/dev/lib/runlet_sh/ebin",
-          "_build/dev/lib/spigot/ebin"
+        list_unused_filters: true,
+        flags: [
+          "-Wunmatched_returns",
+          :error_handling,
+          :race_conditions,
+          :underspecs
         ]
       ],
       default_release: :eventbot,
@@ -54,7 +55,8 @@ defmodule Eventbot.Mixfile do
       {:runlet, "~> 1.0", override: true},
       {:runlet_sh, github: "msantos/runlet_sh"},
       {:runlet_net, github: "msantos/runlet_net"},
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
+      {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
     ]
   end
 end
