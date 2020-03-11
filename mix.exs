@@ -51,6 +51,8 @@ defmodule Eventbot.Mixfile do
       {:romeo, github: "scrogson/romeo", override: true},
       {:hedwig_xmpp,
        github: "msantos/hedwig_xmpp", branch: "crash", override: true},
+      {:fast_xml, "~> 1.1.29",
+       [env: :prod, repo: "hexpm", hex: "fast_xml", override: true]},
       {:spigot, github: "msantos/spigot"},
       {:runlet, "~> 1.0", override: true},
       {:runlet_sh, github: "msantos/runlet_sh"},
