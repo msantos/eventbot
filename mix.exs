@@ -4,7 +4,7 @@ defmodule Eventbot.Mixfile do
   def project do
     [
       app: :eventbot,
-      version: "2.0.0",
+      version: "2.1.0",
       elixir: "~> 1.9",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -48,13 +48,14 @@ defmodule Eventbot.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
+      {:alcove, github: "msantos/alcove", override: true},
+      {:prx, "~> 0.14.1", override: true},
       {:romeo, github: "scrogson/romeo", override: true},
       {:hedwig_xmpp,
        github: "msantos/hedwig_xmpp", branch: "crash", override: true},
-      {:fast_xml, "~> 1.1.29",
-       [env: :prod, repo: "hexpm", hex: "fast_xml", override: true]},
+      {:fast_xml, "~> 1.1.29", override: true, manager: :rebar3},
       {:spigot, github: "msantos/spigot"},
-      {:runlet, "~> 1.0", override: true},
+      {:runlet, github: "msantos/runlet", override: true},
       {:runlet_sh, github: "msantos/runlet_sh"},
       {:runlet_net, github: "msantos/runlet_net"},
       {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
