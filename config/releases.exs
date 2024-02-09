@@ -23,3 +23,4 @@ config :runlet,
   riemann_url: System.get_env("EVENTBOT_RIEMANN_URL", "/event/index?query="),
   root: System.get_env("EVENTBOT_PRX_ROOTDIR", "priv/root"),
   exec: System.get_env("EVENTBOT_PRX_EXEC", "")
+  fstab: System.get_env("EVBOT_PRX_FSTAB", "") |> String.split(":")
