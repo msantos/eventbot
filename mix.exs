@@ -4,19 +4,18 @@ defmodule Eventbot.Mixfile do
   def project do
     [
       app: :eventbot,
-      version: "2.1.0",
+      version: "2.1.1",
       elixir: "~> 1.9",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       description: "Interact with event streams using XMPP",
       dialyzer: [
-        list_unused_filters: true,
-        flags: [
-          "-Wunmatched_returns",
-          :error_handling,
-          :race_conditions,
-          :underspecs
+        plt_add_deps: :app_tree,
+        paths: [
+          "_build/dev/lib/runlet/ebin",
+          "_build/dev/lib/runlet_sh/ebin",
+          "_build/dev/lib/spigot/ebin"
         ]
       ],
       default_release: :eventbot,
@@ -48,18 +47,17 @@ defmodule Eventbot.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:alcove, github: "msantos/alcove", override: true},
-      {:prx, "~> 0.14.1", override: true},
-      {:romeo, github: "scrogson/romeo", override: true},
+      {:alcove, "~> 0.40.5", override: true},
+      {:prx, "~> 0.16.3", override: true},
+      {:romeo, git: "https://github.com/kerryb/romeo.git", override: true},
       {:hedwig_xmpp,
        github: "msantos/hedwig_xmpp", branch: "crash", override: true},
-      {:fast_xml, "~> 1.1.29", override: true, manager: :rebar3},
+      {:fast_xml, "~> 1.1.49", override: true, manager: :rebar3},
       {:spigot, github: "msantos/spigot"},
-      {:runlet, github: "msantos/runlet", override: true},
+      {:runlet, "~> 1.2.2", override: true},
       {:runlet_sh, github: "msantos/runlet_sh"},
       {:runlet_net, github: "msantos/runlet_net"},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
-      {:credo, "~> 1.2", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
     ]
   end
 end
