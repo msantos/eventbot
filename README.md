@@ -1,6 +1,7 @@
-# Eventbot
+# eventbot
 
-eventbot is an XMPP bot for generating and interacting with event streams.
+eventbot is a bot for generating and interacting with event streams using
+XMPP.
 
 ## Concepts
 
@@ -9,7 +10,9 @@ eventbot is an XMPP bot for generating and interacting with event streams.
 `runlets` are a simple command language for generating, filtering and
 performing flow control on a stream of events:
 
-    <source> | <filter> | <sink>
+```
+<source> | <filter> | <sink>
+```
 
 Commands are chained together using the pipe operator (`|`).
 
@@ -32,70 +35,86 @@ used to interact with the runlet.
 
 ## Installing a Release
 
-  1. Download the release for your platform.
+1. Create a release for your platform.
 
-  2. Extract the tarball to /usr/local/lib/eventbot:
+2. Extract the tarball to /usr/local/lib/eventbot:
 
->      mkdir -p /usr/local/lib/eventbot
->      cd /usr/local/lib/eventbot
->      tar zxf /path/to/eventbot.tar.gz
+```bash
+mkdir -p /usr/local/lib/eventbot
+cd /usr/local/lib/eventbot
+tar zxf /path/to/eventbot.tar.gz
+```
 
-  3. Create the eventbot user:
+3. Create the eventbot user:
 
->      useradd -r -c "event bot pseudo-user" -s /bin/false eventbot
+```bash
+useradd -r -c "event bot pseudo-user" -s /bin/false eventbot
+```
 
-  4. Create the chroot and state directories.
+4. Create the chroot and state directories.
 
-    By default, the directories will be created and symlink'ed
-    under /usr/local/lib/eventbot so state is not lost if eventbot is
-    re-installed. The directories can be manually created if you want
-    to put them somewhere else.
+By default, the directories will be created and symlink'ed under
+/usr/local/lib/eventbot so state is not lost if eventbot is re-installed. The
+directories can be manually created if you want to put them somewhere
+else.
 
-    It is safe to re-run the postinstall script.
+It is safe to re-run the postinstall script.
 
->      cd /usr/local/lib/eventbot
->      lib/eventbot-0.1.0/priv/bin/postinstall
+```bash
+cd /usr/local/lib/eventbot
+lib/eventbot-*/priv/bin/postinstall
+```
 
-  5. command line: run the bot.
+5. command line: run the bot.
 
-    The bot is configured using environment variables. See `Configuration`
-    for details.
+The bot is configured using environment variables. See `Configuration`
+for details.
 
-    The bot will run as a daemon and be restarted on exit. See `Booting`
-    for other options.
+The bot will run as a daemon and be restarted on exit. See `Booting`
+for other options.
 
->      sudo -u eventbot \
->        EVENTBOT_USERNAME="botname" \
->        EVENTBOT_PASSWORD="botpassword" \
->        EVENTBOT_JID="botname@example.com" \
->        EVENTBOT_ALIAS="^" \
->        EVENTBOT_ROOMS="test@conference.example.com:alert@conference.example.com" \
->        /usr/local/lib/eventbot/bin/eventbot start
+```bash
+sudo -u eventbot \
+  EVENTBOT_USERNAME="botname" \
+  EVENTBOT_PASSWORD="botpassword" \
+  EVENTBOT_JID="botname@example.com" \
+  EVENTBOT_ALIAS="^" \
+  EVENTBOT_ROOMS="test@conference.example.com:alert@conference.example.com" \
+  /usr/local/lib/eventbot/bin/eventbot start
+```
 
-  6. systemd: run the bot as a systemd service.
+6. systemd: run the bot as a systemd service.
 
-     Copy the systemd service file (`priv/bin/eventbot.service`) to
-     `/etc/systemd/system/eventbot.service`.
+Copy the systemd service file (`priv/bin/eventbot.service`) to
+`/etc/systemd/system/eventbot.service`.
 
->       cp priv/bin/eventbot.service /etc/systemd/system/eventbot.service
+```bash
+cp priv/bin/eventbot.service /etc/systemd/system/eventbot.service
+```
 
-     Copy the example environment file and edit:
+Copy the example environment file and edit:
 
->       mkdir /etc/eventbot
->       cp priv/bin/eventbot.env /etc/eventbot
->       chown root:root /etc/eventbot/eventbot.env
->       chmod 640 /etc/eventbot/eventbot.env
->       vi /etc/eventbot/eventbot.env
+```bash
+mkdir /etc/eventbot
+cp priv/bin/eventbot.env /etc/eventbot
+chown root:root /etc/eventbot/eventbot.env
+chmod 640 /etc/eventbot/eventbot.env
+vi /etc/eventbot/eventbot.env
+```
 
-     Enable the service:
+Enable the service:
 
->       systemctl daemon-reload
->       systemctl start eventbot
->       systemctl status eventbot
+```bash
+systemctl daemon-reload
+systemctl start eventbot
+systemctl status eventbot
+```
 
-  7. Stopping the bot.
+7. Stopping the bot.
 
->      systemctl stop eventbot
+```bash
+systemctl stop eventbot
+```
 
 ## Configuration
 
@@ -110,129 +129,137 @@ EVENTBOT_JID
 
 EVENTBOT_ALIAS
 : The bot can be reference either by the name (EVENTBOT_USERNAME) or by a
-  short form alias. For example, if the name of the bot is "foo" and the
-  short form is "^", the following are equivalent:
+short form alias. For example, if the name of the bot is "foo" and the
+short form is "^", the following are equivalent:
 
-        foo: runtime
-        ^runtime
+```
+foo: runtime
+^runtime
+```
 
 EVENTBOT_ROOMS
 : A list of ":"-separated conference rooms (MUCs):
 
-        muc1@conference.example.com
-        muc1@conference.example.com:muc2@conference.example.com:muc3.conference.example.com
+```
+muc1@conference.example.com
+muc1@conference.example.com:muc2@conference.example.com:muc3.conference.example.com
+```
 
-  Default: no conference rooms
+Default: no conference rooms
 
 EVENTBOT_RIEMANN_HOST
 : IP address/hostname of Riemann service
 
-  Default: localhost
+Default: localhost
 
 EVENTBOT_RIEMANN_PORT
 : Port of riemann HTML5 SSE web service
 
-  Default: 8080
+Default: 8080
 
 EVENTBOT_TLS_SNI
 : Hostname in TLS certificate of XMPP server.
 
-  Default: none (Mandatory: must be set)
+Default: none (Mandatory: must be set)
 
 EVENTBOT_RIEMANN_URL
 : Query URL for Riemann
 
-  Default: /event/index?query=
+Default: /event/index?query=
 
 EVENTBOT_PRX_ROOTDIR
 : chroot directory for containerized Unix processes
 
-  Default: priv/root
+Default: priv/root
 
 EVENTBOT_PRX_EXEC
 : Command to grant eventbot privileges to create a container. By default,
-  eventbot uses a setuid binary. To use `sudo`:
+eventbot uses a setuid binary. To use `sudo`:
 
-        visudo -f /etc/sudoers.d/99_eventbot
-        eventbot ALL = NOPASSWD: /usr/local/lib/eventbot/lib/prx-0.1.0/priv/prx
-        EVENTBOT_PRX_EXEC="sudo -n"
+```bash
+visudo -f /etc/sudoers.d/99_eventbot
+eventbot ALL = NOPASSWD: /usr/local/lib/eventbot/lib/prx-*/priv/prx
+EVENTBOT_PRX_EXEC="sudo -n"
+```
 
-  Default: ""
+Default: ""
 
 ## Installation
 
-  1. Add `eventbot` to your list of dependencies in `mix.exs`:
+If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
->      def deps do
->        [{:eventbot, github: "msantos/eventbot"}]
->      end
+1. Add `eventbot` to your list of dependencies in `mix.exs`:
 
-  2. Ensure `eventbot` is started before your application:
+```elixir
+def deps do
+  [{:eventbot, "~> 2.1.1"}]
+end
+```
 
->      def application do
->        [applications: [:eventbot]]
->      end
+2. Ensure `eventbot` is started before your application:
+
+```elixir
+def application do
+  [applications: [:eventbot]]
+end
+```
 
 ## Building a Release
 
-  1. Install dependencies:
+1. Install dependencies:
 
-     sudo apt install build-essential automake autoconf git
-     sudo apt install libssl-dev libncurses5-dev libexpat1-dev
+```bash
+sudo apt install build-essential automake autoconf git
+libssl-dev libncurses5-dev libexpat1-dev
+```
 
-  2. Install the [asdf](https://github.com/asdf-vm/asdf) language
-     runtime manager
+2. Install the [asdf](https://github.com/asdf-vm/asdf) language
+   runtime manager
 
-     See: https://asdf-vm.com/#/core-manage-asdf-vm
+   See: https://asdf-vm.com/#/core-manage-asdf-vm
 
-     git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.3
-     echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.profile
-     echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.profile
-     . ~/.profile
+```bash
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.profile
+echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.profile
+. ~/.profile
+```
 
-  3. Install the `erlang` compiler and runtime
+3. Clone the eventbot repository.
 
-    asdf list-all erlang
-    asdf install erlang <version>
-    asdf global erlang <version>
+4. Install the `erlang` and `elixir` compilers and runtime
 
-  4. Install the `elixir` compiler and runtime
+```bash
+cd eventbot
+asdf install
+```
 
-    asdf list-all elixir
-    asdf install elixir <version>
-    asdf global elixir <version>
+5. Build the release:
 
+```bash
+# development
+mix do deps.get, deps.compile, release
 
-  5. Clone the eventbot repository:
+# prod
+# clean up old releases:
+rm -rf _build
+MIX_ENV=prod mix do deps.get, deps.compile, release
+```
 
-    ```
-    git clone https://github.com/msantos/eventbot.git
-    ```
+6. Create the tarball:
 
-  6. Build the release:
+```bash
+#!/bin/bash
 
-    ```
-    # development
-    mix do deps.get, deps.compile, release
+set -o errexit
+set -o nounset
+set -o pipefail
 
-    # prod
-    MIX_ENV=prod mix do deps.get, deps.compile, release
-    ```
+VERSION=$(grep "version:" mix.exs | grep -E -o "[0-9]+.[0-9]+.[0-9]+")
+RELEASE=${RELEASE-_build/prod/rel/eventbot/}
+ARCHIVE="eventbot-$VERSION+$(uname -m).tar.gz"
 
-  7. Create the tarball:
+echo "Creating release archive"
 
-    ```
-    #!/bin/bash
-
-    set -o errexit
-    set -o nounset
-    set -o pipefail
-
-    VERSION=$(grep "version:" mix.exs | grep -E -o "[0-9]+.[0-9]+.[0-9]+")
-    RELEASE=${RELEASE-_build/prod/rel/eventbot/}
-    ARCHIVE="eventbot-$VERSION+$(uname -m).tar.gz"
-
-    echo "Creating release archive"
-
-    (cd "$RELEASE" && tar zcvf - .) > "$ARCHIVE"
-    ```
+(cd "$RELEASE" && tar zcvf - .) > "$ARCHIVE"
+```
