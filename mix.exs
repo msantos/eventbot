@@ -47,16 +47,16 @@ defmodule Eventbot.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:alcove, "~> 0.40.5", override: true},
-      {:prx, "~> 0.16.3", override: true},
+      {:alcove, "~> 1.0.0", override: true},
+      {:prx, "~> 1.0.0", override: true},
       {:romeo, git: "https://github.com/kerryb/romeo.git", override: true},
       {:hedwig_xmpp,
        github: "msantos/hedwig_xmpp", branch: "crash", override: true},
-      {:fast_xml, "~> 1.1.49", override: true, manager: :rebar3},
+      {:fast_xml, "~> 1.1", override: true, manager: :rebar3},
       {:spigot, github: "msantos/spigot"},
-      {:runlet, "~> 1.2.2", override: true},
-      {:runlet_sh, github: "msantos/runlet_sh"},
-      {:runlet_net, github: "msantos/runlet_net"},
+      {:runlet, "~> 1.2", override: true},
+      {:runlet_sh, "~> 1.2", override: true},
+      {:runlet_net, "~> 1.0", override: true},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
     ]
   end
