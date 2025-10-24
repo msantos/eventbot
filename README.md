@@ -192,7 +192,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
 ```elixir
 def deps do
-  [{:eventbot, "~> 2.1.1"}]
+  [{:eventbot, "~> 2.1.2"}]
 end
 ```
 
