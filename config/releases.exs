@@ -13,8 +13,8 @@ config :spigot, Spigot.Robot,
     verify: :verify_peer,
     server_name_indication:
       System.fetch_env!("EVENTBOT_TLS_SNI") |> String.to_charlist(),
-    cacertfile: "/etc/ssl/certs/ca-certificates.crt",
-    depth: 2
+    cacertfile: System.get_env("EVBOT_TLS_CACERTFILE", "/etc/ssl/certs/ca-certificates.crt"),
+    depth: System.get_env("EVBOT_TLS_CERTDEPTH", "3") |> String.to_integer()
   ]
 
 config :runlet,

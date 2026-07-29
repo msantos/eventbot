@@ -157,6 +157,16 @@ EVENTBOT_RIEMANN_PORT
 
 Default: 8080
 
+EVBOT_TLS_CACERTFILE
+: CA certificate file path
+
+Default: /etc/ssl/certs/ca-certificates.crt
+
+EVBOT_TLS_CERTDEPTH
+: Server certificate chain depth
+
+Default: 3
+
 EVENTBOT_TLS_SNI
 : Hostname in TLS certificate of XMPP server.
 
@@ -210,7 +220,7 @@ end
 
 ```bash
 sudo apt install build-essential automake autoconf git
-libssl-dev libncurses5-dev libexpat1-dev
+    libssl-dev libncurses5-dev libexpat1-dev
 ```
 
 2. Install the [asdf](https://github.com/asdf-vm/asdf) language
