@@ -4,7 +4,7 @@ defmodule Eventbot.Mixfile do
   def project do
     [
       app: :eventbot,
-      version: "2.1.2",
+      version: "2.1.3",
       elixir: "~> 1.9",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
